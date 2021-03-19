@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Mathjex test</title>
+    <url>/2020/03/18/Mathjax%20test/</url>
+    <content><![CDATA[<h1 id="Mathjex-test"><a href="#Mathjex-test" class="headerlink" title="Mathjex test"></a>Mathjex test</h1><p>$$<br>test\ test test\ test<br>$$</p>
+<p>$hzx AK IOI$<br>$$<br>xhf\ AK\ IOI\ now<br>$$<br>似乎还是要装一些插件才可以运行。</p>
+<p>这里只是单纯做些测试。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Hello, World!</title>
     <url>/2021/03/18/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -16,9 +24,14 @@
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<p>$$<br>a = b<br>$$</p>
+<p>$$<br>{a = b}<br>$$</p>
 <p>你好，这里是中文字测试，我们的博客即将开始使用，敬请期待。</p>
 <p>すみません、ここは中国語のテストです。私達のブログはもうすぐ始まります。楽しみにしてください。</p>
+<p>$a = b$</p>
 ]]></content>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>test</tag>
+      </tags>
   </entry>
 </search>
