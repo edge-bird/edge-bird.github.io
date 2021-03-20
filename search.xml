@@ -1,47 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Mathjex test</title>
-    <url>/2020/03/18/Mathjax%20test/</url>
-    <content><![CDATA[<h1 id="Mathjex-test"><a href="#Mathjex-test" class="headerlink" title="Mathjex test"></a>Mathjex test</h1><p>$$<br>test\ test test\ test<br>$$</p>
-<p>$hzx AK IOI$<br>$$<br>xhf\ AK\ IOI\ now<br>$$<br>似乎还是要装一些插件才可以运行。</p>
-<p>这里只是单纯做些测试。</p>
+    <title>树状数组的养成方法</title>
+    <url>/2021/01/30/binary%20index%20tree/</url>
+    <content><![CDATA[<p><strong>现在的我，能成为你的女主角吗。——《路人女主的养成方法》</strong></p>
+<h1 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h1><p>$Binary\ Index\ Tree$</p>
+<p><strong>树状数组（Binary Index Tree，BIT）</strong> 是一种时间复杂度为  $O(\log_2n)$ 的数据结构。</p>
+<p>这篇文章主要介绍树状数组的三种基础操作：</p>
+<p><strong>1、单点修改</strong></p>
+<p><strong>2、区间查询</strong></p>
+<p><strong>3、区间修改</strong></p>
+<p>树状数组巧妙地利用了<strong>二进制</strong>。例如11，转化为二进制数就是 $(1011)_2$ ，如果我们要求前11项和，可以分别查询 $((0000)_2,(1000)_2]$ 、 $((1000)_2,(1010)_2]$ 以及 $((1010)_2,(1011)_2]$ 的和再相加。区间获取是一个不断地去掉二进制数最右边的一个1的过程。</p>
+<p><img src="https://img.imgdb.cn/item/60149fd13ffa7d37b3aa8395.png" alt="我是BIT的过程！"></p>
+<p>我们定义，二进制数最右边的一个1，连带着它之后的0为 $lowbit(x)$ <strong>（树状数组的核心）</strong>。那么我们用 $C_i$ 维护区间 $(A_i-lowbit(A_i),A_i]$ ，这样显然查询前n项和时需要合并的区间数是少于 $\log_2n$ 的，树状数组的结构大概像下面这样：</p>
+<p><img src="https://img.imgdb.cn/item/6014a0193ffa7d37b3aa9364.png" alt="我是树状数组！"></p>
+<h2 id="树状数组的实现"><a href="#树状数组的实现" class="headerlink" title="树状数组的实现"></a>树状数组的实现</h2><p><strong>1、单点修改/建树（板子）</strong></p>
+<p>我个人比较喜欢 $while$ 形式的：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">add</span> <span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (x &lt;= n)</span><br><span class="line">	&#123;</span><br><span class="line">		tree[x] += k;</span><br><span class="line">		x += lowbit(x);</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">	<span class="keyword">return</span> ;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>也可以写成 $for$ 循环形式的：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">add</span> <span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = x; i &lt;= n; i += lowbit (x))</span><br><span class="line">	&#123;</span><br><span class="line">		tree[i] += k;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">	<span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2、求前n项的和（板子）</strong></p>
+<p>这边也有 $while$ 和 $for$ 不同的写法，但是意思都是一样的</p>
+<p>$while$ 写法：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">query</span> <span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (x != <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		ans += tree[x];</span><br><span class="line">		x -= lowbit(x);</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>$for$ 循环写法：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">query</span> <span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">0</span>; </span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = x; i; i -= lowbit (i))</span><br><span class="line">	&#123;</span><br><span class="line">		ans += tree[i];</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>3、区间修改，给 $[x,y]$ 的每个数 $+k$（前缀和+板子）</strong></p>
+<p>特殊的是，当我们求 $[x,y]$ 的和时，需要用到<strong>前缀和</strong>思想（这里引用到模板题里一位大佬的题解）</p>
+<p>具体代码这里就不贴了，$add$ 函数就是上面的板子。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">add (x, k);</span><br><span class="line">add (y + <span class="number">1</span>, - k);</span><br></pre></td></tr></table></figure>
+<p>这种方法很巧妙，先给 $[x,n]$ 的每个数加$k$，再给 $[y+1,n]$ 的每个数加$-k$。</p>
+<p>那么当然也可以实现区间求和，就是利用前缀和优化上面“前 $n$ 项和”的板子</p>
+<p>总结：树状数组在<strong>单点查询</strong>和<strong>单点修改</strong>上还是可以挥发出很大作用的（指码量），但是更推荐线段树，毕竟树状数组能做的事情，线段树都能做。</p>
+<p>$\large End.$</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>Hello, World!</title>
-    <url>/2021/03/18/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<p>$$<br>{a = b}<br>$$</p>
-<p>你好，这里是中文字测试，我们的博客即将开始使用，敬请期待。</p>
-<p>すみません、ここは中国語のテストです。私達のブログはもうすぐ始まります。楽しみにしてください。</p>
-<p>$a = b$</p>
-]]></content>
+      <categories>
+        <category>OI知识</category>
+      </categories>
       <tags>
-        <tag>Hexo</tag>
-        <tag>test</tag>
+        <tag>树状结构</tag>
+        <tag>数据结构</tag>
+        <tag>提高</tag>
       </tags>
   </entry>
   <entry>
     <title>网络流奇谭</title>
-    <url>/2021/03/19/network-flows/</url>
+    <url>/2021/02/06/network-flows/</url>
     <content><![CDATA[<p><strong>世间万物就这样与我们毫无关联地独自变化；一眨眼，一低头，景色就会立刻不一样。没有觉察到这一点的话，就感觉很可惜呢。——《此花亭奇谭》</strong></p>
 <h1 id="网络流"><a href="#网络流" class="headerlink" title="网络流"></a>网络流</h1><p>$network-flows$</p>
 <p><strong>不$\ \large\star\ $明$\ \large\star\ $意$\ \large\star\ $义的解释</strong></p>
 <p>网络流的话，你可以把它想象成是一个城市水管网络，自来水厂（<strong>源点</strong>）的水通过纵横交错的水管网络和很多中转站（中间的点）到达你家（<strong>汇点</strong>），而这些水管有粗有细，能通过这些水管的水（<strong>流量</strong>）也不同，而我们要求的就是最终到达你家的最大水流。</p>
-<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><strong>源点</strong> $\textbf{(S)}$ ：整个图的起点，源点的流量是<strong>无限大</strong>的。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><strong>源点</strong> $\textbf{(S)}$ ：整个图的起点，源点的流量是<strong>无限大</strong> 的。</p>
 <p><strong>汇点</strong> $\textbf{(T)}$ ：整张图的终点，<strong>流量为</strong> $0$。 </p>
 <p><del>（都到终点了还要什么流量，难道你也住在水管里？）</del></p>
 <p><strong>流量</strong> $\textbf{(flow)}$ ：$\forall (u,v)\in E$，一般用 $f(u,v)$ 表示。</p>
@@ -132,6 +141,9 @@
 <p><a href="https://www.luogu.com.cn/training/55215">https://www.luogu.com.cn/training/55215</a></p>
 <p>$\large End.$</p>
 ]]></content>
+      <categories>
+        <category>OI知识</category>
+      </categories>
       <tags>
         <tag>图论</tag>
         <tag>省选</tag>
